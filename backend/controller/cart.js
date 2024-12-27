@@ -5,7 +5,7 @@ const addToCart = async (req, res) => {
 //   console.log("Req user:-", req.user);
   const userId = req.user.id;
 try {
-    let cart = await Cart.findOne({ userId });
+    let cart = await Cart.findOne({ userId });  //check the user's cart in cart Database if not then create one and add the items in the cart
 
     if (!cart) {
       cart = new Cart({ userId, items: [] });
@@ -33,7 +33,7 @@ const getCartProduct=async(req,res)=>{
     const userId = req.user.id;
 
     try {
-      const cart = await Cart.findOne({ userId }).populate("items.productId");
+      const cart = await Cart.findOne({ userId }).populate("items.productId");  //get user's added product into the cart
   
       if (!cart) {
         return res.status(200).json({ items: [] });

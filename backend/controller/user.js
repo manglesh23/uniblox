@@ -1,9 +1,9 @@
 const User = require("../models/user");
 const jsonwebtoken = require("jsonwebtoken");
 console.log("Controller")
-
-const createUser = async (req, res) => {
-  try {
+ 
+const createUser = async (req, res) => {                     //User Sign Up API
+  try { 
     console.log("start");
     const { name, mobileNumber, email, password, role } = req.body;
     console.log(name, mobileNumber, email);
@@ -18,7 +18,7 @@ const createUser = async (req, res) => {
   }
 };
 
-const userlogIn = async (req, res) => {
+const userlogIn = async (req, res) => {                           //User Login API
   const { email, password } = req.body;
 
   let findUser = await User.findOne({ email });
@@ -27,7 +27,7 @@ const userlogIn = async (req, res) => {
     res.status(404).json({ msg: "Incorrect Credentials", success: false });
   } else {
     let token = jsonwebtoken.sign(
-      { id: findUser._id, email: findUser.email,role:findUser.role },
+      { id: findUser._id, email: findUser.email,role:findUser.role },               //On User Login JWT created 
       process.env.SECRET_KEY,
       { expiresIn: "1d" }
     );

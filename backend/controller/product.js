@@ -2,9 +2,9 @@ const Product = require("../models/product");
 
 const createProduct = async (req, res) => {
   try {
-    const { name, description, price, category, stock } = req.body;
-    console.log("Req.User:-", req.user);
-    let product = new Product({ name, description, price, category, stock });
+    const { name, description, price, category, stock } = req.body;   //to add product into the product database
+    console.log("Req.User:-", req.user);                                     //only admin can add product 
+    let product = new Product({ name, description, price, category, stock });  
     await product.save();
     res
       .status(200)
@@ -24,7 +24,7 @@ const getProduct = async (req, res) => {
   const { page , limit } = req.query;
 
   try {
-    const products = await Product.find()
+    const products = await Product.find()  //get all product 
       .skip((page - 1) * limit) // Skip items for previous pages
       .limit(parseInt(limit)) // Limit items per page
       .exec();
@@ -34,7 +34,7 @@ const getProduct = async (req, res) => {
     res.json({
       products,
       total,
-      currentPage: parseInt(page),
+      currentPage: parseInt(page),                 //pagenitation implemented
       totalPages: Math.ceil(total / limit),
     });
   } catch (e) {
