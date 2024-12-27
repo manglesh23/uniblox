@@ -43,7 +43,7 @@ const orderSchema = new mongoose.Schema({
     default: "Processing",
   },
 
-  couponApplied: { type: Boolean, default: false },
+  couponApplied: { type: Number, default: 0 },
   createdAt: {
     type: Date,
     default: Date.now,

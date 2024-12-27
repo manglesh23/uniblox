@@ -65,9 +65,28 @@ const getOrderByuser = async (req, res) => {
 
   try {
     let getOrderHistory = await Order.find({ userId });
-    // console.log(getOrderHistory);
+    console.log("Order History:-", getOrderHistory);
+
     if (getOrderHistory && getOrderHistory.length > 0) {
-      res.status(200).json({ Total_Order:getOrderHistory.length,OrderDetails: getOrderHistory });
+      let totalAmount = getOrderHistory.reduce(
+        (amount, item) => amount + item.totalAmount,
+        0
+      );
+
+      let totalDiscount = getOrderHistory.reduce(
+        (amount, item) => amount + item.couponApplied,
+        0
+      );
+      res
+        .status(200)
+        .json({
+          Total_Order: getOrderHistory.length,
+          Total_Discount_Amount: totalDiscount,
+          Total_Amount: totalAmount,
+          OrderDetails: getOrderHistory,
+        });
+    } else {
+      res.status(200).json({ Total_Order: 0, message: "No Order From You" });
     }
   } catch (e) {
     res.status(404).json({ msg: e.message });

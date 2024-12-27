@@ -3,7 +3,7 @@ const Product = require("../models/product");
 const createProduct = async (req, res) => {
   try {
     const { name, description, price, category, stock } = req.body;   //to add product into the product database
-    console.log("Req.User:-", req.user);                                     //only admin can add product 
+    // console.log("Req.User:-", req.user);                                    
     let product = new Product({ name, description, price, category, stock });  
     await product.save();
     res
