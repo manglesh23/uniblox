@@ -234,9 +234,9 @@ const Home = () => {
       };
 
       let response = await axios(config);
-      console.log("User Profile:-", response);
+      // console.log("User Profile:-", response);
       if (response) {
-        navigate("/user", { state:{apiData: response.data.msg} });
+        navigate("/user", { state: { apiData: response.data.msg } });
       }
     } catch (e) {
       console.error(e);
@@ -251,7 +251,6 @@ const Home = () => {
       flexDirection="column"
       width="190vh"
     >
-      {/* Header */}
       <Flex
         justify="space-between"
         align="center"
@@ -260,7 +259,6 @@ const Home = () => {
         boxShadow="sm"
         position="sticky"
         w="100%"
-        // overflow="hidden"
         zIndex="dropdown"
       >
         <Text
@@ -268,13 +266,14 @@ const Home = () => {
           fontWeight="bold"
           color="teal.500"
           fontStyle="oblique"
+          align="start"
         >
           Uniblox
         </Text>
-        <Flex gap={4} width="70%">
+        <Flex gap={2} width="70%" alignContent="flex-start">
           <Input
-            placeholder="Search for products"
-            width="100%"
+            placeholder="Search For Products"
+            width="90%"
             bg="white"
             borderRadius="md"
           />
@@ -298,7 +297,7 @@ const Home = () => {
               </Tooltip>
               <MenuList zIndex="dropdown" borderRadius="md" boxShadow="md">
                 <MenuItem onClick={getMyProfile}>Profile</MenuItem>
-                <MenuItem>Settings</MenuItem>
+                {/* <MenuItem>Settings</MenuItem> */}
                 <MenuItem onClick={getOrderHistory}>Order</MenuItem>
                 {role === "Admin" && (
                   <MenuItem onClick={addproduct}>Add Product</MenuItem>
@@ -307,13 +306,6 @@ const Home = () => {
               </MenuList>
             </Menu>
 
-            {/* <IconButton
-              aria-label="Shopping Cart"
-              icon={<FiShoppingCart />}
-              variant="ghost"
-              fontSize="xl"
-              onClick={() => handleCart()}
-            /> */}
             <Box position="relative" display="inline-block">
               <IconButton
                 aria-label="Shopping Cart"
@@ -341,8 +333,6 @@ const Home = () => {
           </HStack>
         </Flex>
       </Flex>
-
-      {/* Hero Section */}
       <Box
         width="100%"
         h="300px"

@@ -5,17 +5,9 @@ import {
   Box,
   Text,
   Heading,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
   Spinner,
   Alert,
   AlertIcon,
-  Center,
-  Stack,
   Flex,
   HStack,
   VStack,
@@ -32,25 +24,26 @@ const Order = () => {
   //   let product=[...apiData.OrderDetails];
   //   console.log("Product:-",product);
   return (
-    <Flex align="left" width="100%">
+    <Flex
+      align="flex-start"
+      width="100%"
+      backgroundColor="white"
+      direction="column"
+    >
       <Box
         p={8}
-        backgroundColor="gray.200"
+        backgroundColor="white"
         maxWidth="100%"
-        margin="0 auto"
+        width="100%"
+        // margin="0"
         borderRadius="lg"
         boxShadow="lg"
-        align="left"
+        align="flex-start"
       >
         <Heading mb={2} textAlign="left" color="teal.600">
           Ordered History
         </Heading>
-        {/* <Text fontSize="sm" color="gray.900">
-          Discount: {apiData.Total_Discount_Amount.toFixed(2)}
-        </Text>
-        <Text fontSize="sm" color="gray.900">
-          Total Order: {apiData.Total_Order}
-        </Text> */}
+
         {loading ? (
           <HStack justifyContent="center">
             <Spinner size="lg" color="teal.500" />
@@ -62,7 +55,7 @@ const Order = () => {
             <AlertDescription>{error}</AlertDescription>
           </Alert>
         ) : apiData.OrderDetails && apiData.OrderDetails.length > 0 ? (
-          <VStack spacing={6} align="start" width="100%">
+          <VStack spacing={1} align="start" width="100%">
             <Text fontSize="sm" color="gray.900">
               Discount: {apiData.Total_Discount_Amount.toFixed(2)}
             </Text>
@@ -79,11 +72,12 @@ const Order = () => {
                 boxShadow="sm"
                 backgroundColor="white"
                 _hover={{ boxShadow: "md", transform: "scale(1.02)" }}
-                transition="all 0.3s ease"
+                // transition="all 0.3s ease"
                 width="100%"
+                spacing={8}
               >
                 {item.products.map((product, productIndex) => (
-                  <HStack spacing={4} align="left" key={productIndex}>
+                  <HStack spacing={4} align="flex-start" key={productIndex}>
                     <Image
                       src={"https://via.placeholder.com/100"}
                       alt={item.name || "Product Image"}

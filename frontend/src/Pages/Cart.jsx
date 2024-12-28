@@ -15,7 +15,7 @@ import {
   AlertDescription,
   Flex,
   Button,
-  useToast
+  useToast,
 } from "@chakra-ui/react";
 
 const Cart = () => {
@@ -23,7 +23,7 @@ const Cart = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [total, setTotal] = useState(0);
-  const toast=useToast();
+  const toast = useToast();
 
   useEffect(() => {
     const fetchUserCart = async () => {
@@ -113,7 +113,7 @@ const Cart = () => {
   return (
     <Box
       p={8}
-      backgroundColor="gray.100"
+      backgroundColor="white"
       width="1350px"
       margin="0"
       justifyContent="center"

@@ -73,7 +73,7 @@ function SignUp() {
   };
 
   return (
-    <Flex minH="90vh" align="center" justify="center" bg="gray.50">
+    <Flex minH="90vh" align="center" justify="center" bg="white">
       <Stack spacing={8} mx="auto" maxW="lg" py={12} px={6}>
         <Box rounded="lg" bg="white" boxShadow="lg" p={8} w="400px">
           <form onSubmit={handleSignUp}>

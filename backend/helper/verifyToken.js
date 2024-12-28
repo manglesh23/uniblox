@@ -5,8 +5,8 @@ const verifytoken = async (req, res, next) => {
   // console.log("Token:-",token)
   // console.log("Before token:-",token);
 
-  if(token.includes('Bearer')){
-  token = token.split(" ")[1];
+  if (token.includes("Bearer")) {
+    token = token.split(" ")[1];
   }
 
   // console.log("Verification Token:-",token);

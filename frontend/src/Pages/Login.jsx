@@ -67,7 +67,7 @@ function LoginPage() {
   }
 
   return (
-    <Flex minH="100vh" align="center" justify="center" bg="gray.50" backgroundColor="gray.100">
+    <Flex minH="100vh" align="center" justify="center" bg="white" backgroundColor="white">
       <Stack spacing={8} mx="auto" maxW="lg" py={12} px={6}>
         <Stack align="center">
           <Heading fontSize="4xl">Sign in to your account</Heading>

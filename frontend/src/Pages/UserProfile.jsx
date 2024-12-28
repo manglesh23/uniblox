@@ -14,7 +14,7 @@ import { useLocation } from "react-router-dom";
 
 function UserProfile() {
   let location = useLocation();
-  console.log("Location:-", location.state.apiData);
+  //   console.log("Location:-", location.state.apiData);
   const { name, email, mobileNumber, role, image, address } =
     location.state.apiData;
   return (
@@ -65,7 +65,7 @@ function UserProfile() {
           <Button
             colorScheme="teal"
             width="full"
-            onClick={() => alert("Edit Profile Clicked")}
+            onClick={() => alert("Profile Clicked")}
           >
             Edit Profile
           </Button>
