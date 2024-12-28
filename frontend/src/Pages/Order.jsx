@@ -29,8 +29,8 @@ const Order = () => {
   console.log(location);
   const { apiData } = location.state || {};
   console.log("data:-", apiData);
-  let product=[...apiData.OrderDetails];
-  console.log("Product:-",product);
+  //   let product=[...apiData.OrderDetails];
+  //   console.log("Product:-",product);
   return (
     <Flex align="left" width="100%">
       <Box
@@ -45,12 +45,12 @@ const Order = () => {
         <Heading mb={2} textAlign="left" color="teal.600">
           Ordered History
         </Heading>
-        <Text fontSize="sm" color="gray.900">
+        {/* <Text fontSize="sm" color="gray.900">
           Discount: {apiData.Total_Discount_Amount.toFixed(2)}
         </Text>
         <Text fontSize="sm" color="gray.900">
           Total Order: {apiData.Total_Order}
-        </Text>
+        </Text> */}
         {loading ? (
           <HStack justifyContent="center">
             <Spinner size="lg" color="teal.500" />
@@ -61,9 +61,15 @@ const Order = () => {
             <AlertTitle>Error!</AlertTitle>
             <AlertDescription>{error}</AlertDescription>
           </Alert>
-        ) :apiData.OrderDetails && apiData.OrderDetails.length > 0 ? (
+        ) : apiData.OrderDetails && apiData.OrderDetails.length > 0 ? (
           <VStack spacing={6} align="start" width="100%">
-            {product.map((item, index) => (
+            <Text fontSize="sm" color="gray.900">
+              Discount: {apiData.Total_Discount_Amount.toFixed(2)}
+            </Text>
+            <Text fontSize="sm" color="gray.900">
+              Total Order: {apiData.Total_Order}
+            </Text>
+            {apiData.OrderDetails.map((item, index) => (
               <Box
                 key={index}
                 p={4}
@@ -77,29 +83,29 @@ const Order = () => {
                 width="100%"
               >
                 {item.products.map((product, productIndex) => (
-                <HStack spacing={4} align="left"   key={productIndex}>
-                  <Image
-                    src={"https://via.placeholder.com/100"}
-                    alt={item.name || "Product Image"}
-                    boxSize="100px"
-                    objectFit="cover"
-                    borderRadius="md"
-                  />
-                  <VStack align="start" spacing={1}>
-                    <Text fontSize="lg" fontWeight="bold" color="teal.700">
-                      {product.name || "Unknown Product"}
-                    </Text>
-                    <Text fontSize="sm" color="gray.600">
-                      Price: {product.price || "N/A"}
-                    </Text>
-                    <Text fontSize="sm" color="gray.600">
-                      Discount: {product.discountOnProduct || "N/A"}
-                    </Text>
-                    <Text fontSize="sm" color="gray.600">
-                      Quantity: {product.quantity}
-                    </Text>
-                  </VStack>
-                </HStack>
+                  <HStack spacing={4} align="left" key={productIndex}>
+                    <Image
+                      src={"https://via.placeholder.com/100"}
+                      alt={item.name || "Product Image"}
+                      boxSize="100px"
+                      objectFit="cover"
+                      borderRadius="md"
+                    />
+                    <VStack align="start" spacing={1}>
+                      <Text fontSize="lg" fontWeight="bold" color="teal.700">
+                        {product.name || "Unknown Product"}
+                      </Text>
+                      <Text fontSize="sm" color="gray.600">
+                        Price: {product.price || "N/A"}
+                      </Text>
+                      <Text fontSize="sm" color="gray.600">
+                        Discount: {product.discountOnProduct || "N/A"}
+                      </Text>
+                      <Text fontSize="sm" color="gray.600">
+                        Quantity: {product.quantity}
+                      </Text>
+                    </VStack>
+                  </HStack>
                 ))}
               </Box>
             ))}

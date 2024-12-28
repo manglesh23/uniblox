@@ -18,6 +18,7 @@ import {
   Tooltip,
   Spinner,
   useToast,
+  Badge,
 } from "@chakra-ui/react";
 import { FiShoppingCart, FiUser, FiSearch } from "react-icons/fi";
 import { jwtDecode } from "jwt-decode";
@@ -58,6 +59,7 @@ const Home = () => {
 
   const [role, setRole] = useState(null);
   const [order, setOrder] = useState(null);
+  const [cartCount, setCartCount] = useState(0);
   const navigate = useNavigate();
   const toast = useToast();
 
@@ -77,6 +79,32 @@ const Home = () => {
       }
     };
     fetchUserRole();
+  }, []);
+
+  useEffect(() => {
+    const fetchUserCart = async () => {
+      try {
+        let getToken = localStorage.getItem("authToken");
+        let config = {
+          method: "get",
+          maxBodyLength: Infinity,
+          url: "http://localhost:4000/cart/getcartproduct",
+          headers: {
+            Authorization: getToken,
+          },
+        };
+
+        let response = await axios(config);
+        // console.log("Cart Product:-", response);
+        // setCartProducts(response.data.items || []);
+        setCartCount(response.data.items.length);
+        // cartCount = response.data.items.length;
+      } catch (e) {
+        console.error("Error fetching cart products:", e);
+        // setError(err.response?.data?.message || "An error occurred");
+      }
+    };
+    fetchUserCart();
   }, []);
 
   const logout = () => {
@@ -193,6 +221,28 @@ const Home = () => {
     }
   };
 
+  const getMyProfile = async () => {
+    try {
+      let getToken = localStorage.getItem("authToken");
+      let config = {
+        method: "get",
+        maxBodyLength: Infinity,
+        url: "http://localhost:4000/user/getuser",
+        headers: {
+          Authorization: getToken,
+        },
+      };
+
+      let response = await axios(config);
+      console.log("User Profile:-", response);
+      if (response) {
+        navigate("/user", { state:{apiData: response.data.msg} });
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   return (
     <Box
       bg="gray.50"
@@ -246,14 +296,8 @@ const Home = () => {
                   fontSize="xl"
                 />
               </Tooltip>
-              <MenuList
-                zIndex="dropdown" // Ensure it's above other elements
-                borderRadius="md" // Optional: Adjust styling of the dropdown
-                boxShadow="md"
-                // position="absolute" // Explicitly set position
-                // transform="translateY(-8px)"
-              >
-                <MenuItem>Profile</MenuItem>
+              <MenuList zIndex="dropdown" borderRadius="md" boxShadow="md">
+                <MenuItem onClick={getMyProfile}>Profile</MenuItem>
                 <MenuItem>Settings</MenuItem>
                 <MenuItem onClick={getOrderHistory}>Order</MenuItem>
                 {role === "Admin" && (
@@ -263,13 +307,37 @@ const Home = () => {
               </MenuList>
             </Menu>
 
-            <IconButton
+            {/* <IconButton
               aria-label="Shopping Cart"
               icon={<FiShoppingCart />}
               variant="ghost"
               fontSize="xl"
               onClick={() => handleCart()}
-            />
+            /> */}
+            <Box position="relative" display="inline-block">
+              <IconButton
+                aria-label="Shopping Cart"
+                icon={<FiShoppingCart />}
+                variant="ghost"
+                fontSize="xl"
+                onClick={handleCart}
+              />
+              {cartCount > 0 && (
+                <Badge
+                  position="absolute"
+                  top="-1"
+                  right="-1"
+                  backgroundColor=""
+                  color="black"
+                  borderRadius="full"
+                  fontSize="xs"
+                  px={2}
+                  py={1}
+                >
+                  {cartCount}
+                </Badge>
+              )}
+            </Box>
           </HStack>
         </Flex>
       </Flex>
@@ -295,7 +363,7 @@ const Home = () => {
           size="lg"
         >
           <Text fontSize="3xl" fontWeight="bold">
-            Welcome to E-Shop
+            Welcome to Uniblox Store
           </Text>
           <Text fontSize="lg" mt={2}>
             Your one-stop destination for all your shopping needs.
@@ -312,7 +380,7 @@ const Home = () => {
           {/* Categories */}
         </Text>
         <Flex gap={4} overflowX="auto" width="100%" justifyContent="center">
-          {["Electronics", "Fashion", "Home", "Books", "Sports"].map(
+          {["Electronics", "Fashion", "Mobile", "Books", "Sports", "Shoes"].map(
             (category) => (
               <Button key={category} colorScheme="teal" size="sm">
                 {category}
@@ -395,7 +463,7 @@ const Home = () => {
       <Box bg="gray.800" color="white" p={6} mt={8}>
         <Flex justify="space-between" flexWrap="wrap">
           <VStack align="flex-start" spacing={2}>
-            <Text fontWeight="bold">E-Shop</Text>
+            <Text fontWeight="bold">Uniblox</Text>
             <Text>About Us</Text>
             <Text>Contact Us</Text>
           </VStack>

@@ -1,9 +1,10 @@
 const User = require("../models/user");
 const jsonwebtoken = require("jsonwebtoken");
-console.log("Controller")
- 
-const createUser = async (req, res) => {                     //User Sign Up API
-  try { 
+console.log("Controller");
+
+const createUser = async (req, res) => {
+  //User Sign Up API
+  try {
     console.log("start");
     const { name, mobileNumber, email, password, role } = req.body;
     console.log(name, mobileNumber, email);
@@ -18,7 +19,8 @@ const createUser = async (req, res) => {                     //User Sign Up API
   }
 };
 
-const userlogIn = async (req, res) => {                           //User Login API
+const userlogIn = async (req, res) => {
+  //User Login API
   const { email, password } = req.body;
 
   let findUser = await User.findOne({ email });
@@ -27,7 +29,7 @@ const userlogIn = async (req, res) => {                           //User Login A
     res.status(404).json({ msg: "Incorrect Credentials", success: false });
   } else {
     let token = jsonwebtoken.sign(
-      { id: findUser._id, email: findUser.email,role:findUser.role },               //On User Login JWT created 
+      { id: findUser._id, email: findUser.email, role: findUser.role }, //On User Login JWT created
       process.env.SECRET_KEY,
       { expiresIn: "1d" }
     );
@@ -37,4 +39,15 @@ const userlogIn = async (req, res) => {                           //User Login A
   }
 };
 
-module.exports = { createUser, userlogIn };
+const getUserById = async (req, res) => {
+  try {
+    let userId = req.user.id;
+    console.log("User id:-", userId);
+    let getUser = await User.findById(userId).select("-password");
+    res.status(200).json({ msg: getUser });
+  } catch (e) {
+    res.status(404).json({ msg: "Failed to fetch data" });
+  }
+};
+
+module.exports = { createUser, userlogIn, getUserById };

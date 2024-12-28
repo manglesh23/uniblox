@@ -67,13 +67,13 @@ function LoginPage() {
   }
 
   return (
-    <Flex minH="100vh" align="center" justify="center" bg="gray.50">
+    <Flex minH="100vh" align="center" justify="center" bg="gray.50" backgroundColor="gray.100">
       <Stack spacing={8} mx="auto" maxW="lg" py={12} px={6}>
         <Stack align="center">
           <Heading fontSize="4xl">Sign in to your account</Heading>
-          <Text fontSize="lg" color="gray.600">
+          {/* <Text fontSize="lg" color="gray.600">
             to enjoy all our cool <Link color="blue.400">features</Link> ✌️
-          </Text>
+          </Text> */}
         </Stack>
         <Box rounded="lg" bg="white" boxShadow="lg" p={8}>
           <Stack spacing={4}>

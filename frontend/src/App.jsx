@@ -11,6 +11,7 @@ import Cart from './Pages/Cart'
 import AddProduct from './Pages/AddProduct'
 import Order from './Pages/Order'
 import PaymentComponent from './helper/PaymentComponent'
+import UserProfile from './Pages/UserProfile'
 
 function App() {
   // const [count, setCount] = useState(0)
@@ -25,6 +26,7 @@ function App() {
          <Route path='/addproduct' element={<AddProduct/>}/>
          <Route path='/order' element={<Order/>}/>
          <Route path='/payment' element={<PaymentComponent/>}/>
+         <Route path='/user' element={<UserProfile/>}/>
       </Routes>
     </>
   )
