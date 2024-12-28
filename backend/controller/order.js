@@ -31,17 +31,22 @@ const orderPlace = async (req, res) => {
 
     const totalAmount = subtotal - discount;
     // console.log("Totla Amount:-", totalAmount);
-
-    const newOrder = new Order({
-      userId,
-      products: getCartProduct.items.map((item) => ({
+    let product = [];
+    
+      product = getCartProduct.items.map((item) => ({
         productId: item.productId._id,
         name: item.productId.name,
         price: item.productId.price,
         quantity: item.quantity,
-      })),
+        discountOnProduct:discount>0? item.productId.price * 0.1:0,
+      }));
+    
+    console.log("Product Ordered:-", product);
+    const newOrder = new Order({
+      userId,
+      products: [...product],
       totalAmount,
-      couponApplied: discount > 0,
+      couponApplied: discount,
     });
 
     await newOrder.save();
@@ -77,14 +82,12 @@ const getOrderByuser = async (req, res) => {
         (amount, item) => amount + item.couponApplied,
         0
       );
-      res
-        .status(200)
-        .json({
-          Total_Order: getOrderHistory.length,
-          Total_Discount_Amount: totalDiscount,
-          Total_Amount: totalAmount,
-          OrderDetails: getOrderHistory,
-        });
+      res.status(200).json({
+        Total_Order: getOrderHistory.length,
+        Total_Discount_Amount: totalDiscount,
+        Total_Amount: totalAmount,
+        OrderDetails: getOrderHistory,
+      });
     } else {
       res.status(200).json({ Total_Order: 0, message: "No Order From You" });
     }
