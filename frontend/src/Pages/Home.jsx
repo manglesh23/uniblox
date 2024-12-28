@@ -29,7 +29,7 @@ import Order from "./Order";
 const fetchProduct = async ({ pageParam = 1 }) => {
   // console.log("Page Param:-", pageParam);
   let response = await axios.get(
-    `http://localhost:4000/product/getproduct?page=${pageParam}&limit=2`
+    `http://localhost:4000/product/getproduct?page=${pageParam}&limit=4`
   );
   return response.data;
   // console.log("Response:-", response.data);
@@ -47,19 +47,17 @@ const Home = () => {
     queryKey: ["products"],
     queryFn: fetchProduct,
     getNextPageParam: (lastPage) => {
-      // console.log("last Page:-", lastPage);
       if (!lastPage) return undefined;
       const { currentPage, totalPages } = lastPage;
-      // console.log("Current and last:-", currentPage, totalPages);
+
       let nextPage = currentPage <= totalPages ? currentPage + 1 : undefined;
-      // console.log("Next page:-", nextPage);
-      // console.log("Has next Page:-",hasNextPage,isFetchingNextPage);
+
       return nextPage;
     },
   });
 
   const [role, setRole] = useState(null);
-  const [order,setOrder]=useState(null)
+  const [order, setOrder] = useState(null);
   const navigate = useNavigate();
   const toast = useToast();
 
@@ -189,9 +187,9 @@ const Home = () => {
     let response = await axios(config);
     // console.log(response);
     setOrder(response.data);
-    if(response.data){
-        navigate('/order',{ state: { apiData: response.data } });
-        // <Order data={response.data}/>
+    if (response.data) {
+      navigate("/order", { state: { apiData: response.data } });
+      // <Order data={response.data}/>
     }
   };
 

@@ -43,10 +43,10 @@ const Order = () => {
         align="left"
       >
         <Heading mb={2} textAlign="left" color="teal.600">
-          Ordered Products
+          Ordered History
         </Heading>
         <Text fontSize="sm" color="gray.900">
-          Discount: {apiData.Total_Discount_Amount}
+          Discount: {apiData.Total_Discount_Amount.toFixed(2)}
         </Text>
         <Text fontSize="sm" color="gray.900">
           Total Order: {apiData.Total_Order}
@@ -77,7 +77,7 @@ const Order = () => {
                 width="100%"
               >
                 {item.products.map((product, productIndex) => (
-                <HStack spacing={4} align="left">
+                <HStack spacing={4} align="left"   key={productIndex}>
                   <Image
                     src={"https://via.placeholder.com/100"}
                     alt={item.name || "Product Image"}

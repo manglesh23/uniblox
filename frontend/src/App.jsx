@@ -10,6 +10,7 @@ import ProtectedRoute from "./helper/protectedRouter"
 import Cart from './Pages/Cart'
 import AddProduct from './Pages/AddProduct'
 import Order from './Pages/Order'
+import PaymentComponent from './helper/PaymentComponent'
 
 function App() {
   // const [count, setCount] = useState(0)
@@ -23,6 +24,7 @@ function App() {
          <Route path='/cart' element={<Cart/>}/>
          <Route path='/addproduct' element={<AddProduct/>}/>
          <Route path='/order' element={<Order/>}/>
+         <Route path='/payment' element={<PaymentComponent/>}/>
       </Routes>
     </>
   )
