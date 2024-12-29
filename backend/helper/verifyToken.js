@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 
-const verifytoken = async (req, res, next) => {
+const verifytoken = async (req, res, next) => {               //middleware to verify the token.
   let token = req.headers["authorization"];
   // console.log("Token:-",token)
   // console.log("Before token:-",token);

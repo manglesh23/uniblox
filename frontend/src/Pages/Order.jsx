@@ -41,7 +41,7 @@ const Order = () => {
         align="flex-start"
       >
         <Heading mb={2} textAlign="left" color="teal.600">
-          Ordered History
+          Order History
         </Heading>
 
         {loading ? (

@@ -2,11 +2,11 @@ const Cart = require("../models/cart");
 const Order = require("../models/order");
 
 const orderPlace = async (req, res) => {
-  let userId = req.user.id;
-  const { couponCode } = req.body;
+  let userId = req.user.id;                                       //logged In user's id getting through jsonwebtoken
+  const { couponCode } = req.body;                                //token is stored in LocalStorage
 
   try {
-    let getCartProduct = await Cart.findOne({ userId }).populate(
+    let getCartProduct = await Cart.findOne({ userId }).populate(            //get the items added in the Cart
       "items.productId"
     );
 
@@ -24,12 +24,12 @@ const orderPlace = async (req, res) => {
 
     let discount = 0;
 
-    const nthOrder = (await Order.countDocuments({ userId })) + 1;
+    const nthOrder = (await Order.countDocuments({ userId })) + 1; //if Nth order then discount applied else discount is Zero
     if (couponCode === "10PERCENT" && nthOrder % 2 === 0) {
       discount = subtotal * 0.1;
     }
-
-    const totalAmount = subtotal - discount;
+  
+    const totalAmount = subtotal - discount;              //total Amount on Each order
     // console.log("Totla Amount:-", totalAmount);
     let product = [];
     

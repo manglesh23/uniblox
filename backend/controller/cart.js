@@ -12,7 +12,7 @@ try {
     }
 
     const existingItem = cart.items.find(
-      (item) => item.productId.toString() === productId
+      (item) => item.productId.toString() === productId     //if cart already have the item then increase the quantity else push new product into cart Database
     );
 
     if (existingItem) {

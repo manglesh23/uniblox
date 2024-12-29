@@ -116,9 +116,17 @@ const Cart = () => {
       backgroundColor="white"
       width="1350px"
       margin="0"
-      justifyContent="center"
+      justifyContent="left"
     >
-      <Heading mb={6}>Cart Products</Heading>
+      <Heading
+        mb={6}
+        justifyContent="left"
+        align="start"
+        fontStyle={"oblique"}
+        fontSize={30}
+      >
+        Cart Products
+      </Heading>
       {loading ? (
         <HStack justifyContent="center">
           <Spinner size="lg" />
@@ -131,7 +139,7 @@ const Cart = () => {
         </Alert>
       ) : cartProducts.length > 0 ? (
         <>
-          <VStack spacing={6} align="stretch">
+          <VStack spacing={6} align="start-left">
             {cartProducts.map((item, index) => (
               <Box
                 key={index}
