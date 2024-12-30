@@ -46,6 +46,11 @@ const AddProduct = () => {
       let response = await axios(config);
       console.log("Response:-", response);
       if(response.data.success){
+        setName("");
+        setCategory("");
+        setPrice("");
+        setDescription("");
+        setStock("");
         toast({
           title: "Product Added Successfully",
           description: "",

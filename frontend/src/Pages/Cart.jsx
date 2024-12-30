@@ -16,6 +16,7 @@ import {
   Flex,
   Button,
   useToast,
+  Input,
 } from "@chakra-ui/react";
 
 const Cart = () => {
@@ -23,6 +24,7 @@ const Cart = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [total, setTotal] = useState(0);
+  const [coupon, setCoupon] = useState("");
   const toast = useToast();
 
   useEffect(() => {
@@ -65,9 +67,10 @@ const Cart = () => {
       console.log("handle payment");
       const subtotal = calculateSubtotal();
       console.log(subtotal);
+      console.log(coupon);
       let getToken = localStorage.getItem("authToken");
       let data = JSON.stringify({
-        couponCode: "10PERCENT",
+        couponCode: coupon,
       });
 
       let config = {
@@ -91,32 +94,32 @@ const Cart = () => {
           duration: 3000,
           isClosable: true,
         });
-      } else {
-        toast({
-          title: "Falied to Place order",
-          description: "",
-          status: "success",
-          duration: 3000,
-          isClosable: true,
-        });
       }
     } catch (e) {
+      const errorMessage =
+        e.response && e.response.data && e.response.data.message
+          ? e.response.data.message
+          : "Failed to Place Order";
+
+      // Show error message in toast
       toast({
-        title: "Falied to Place order",
-        description: e,
-        status: "Falied",
+        title: "Failed to Place Order",
+        description: errorMessage,
+        status: "error",
         duration: 3000,
         isClosable: true,
       });
     }
   };
+
   return (
     <Box
       p={8}
       backgroundColor="white"
-      width="1350px"
+      width="100%"
       margin="0"
-      justifyContent="left"
+      justifyContent="flext-start"
+      //   display="flex"
     >
       <Heading
         mb={6}
@@ -169,6 +172,15 @@ const Cart = () => {
             ))}
           </VStack>
           <Divider my={6} />
+          <Input
+            width="50%"
+            align="left"
+            id="coupon"
+            name="coupon"
+            placeholder="Enter Coupon Code"
+            value={coupon}
+            onChange={(e) => setCoupon(e.target.value)}
+          />
           <Flex justifyContent="flex" alignItems="center" mt={4}>
             <Text fontSize="xl" fontWeight="bold">
               Subtotal: {calculateSubtotal().toFixed(2)}

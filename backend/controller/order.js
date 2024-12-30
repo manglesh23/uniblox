@@ -1,58 +1,90 @@
 const Cart = require("../models/cart");
 const Order = require("../models/order");
+const Coupon = require("../models/coupon");
 
 const orderPlace = async (req, res) => {
-  let userId = req.user.id;                                       //logged In user's id getting through jsonwebtoken
-  const { couponCode } = req.body;                                //token is stored in LocalStorage
+  const userId = req.user.id; // Logged-in user's ID
+  const { couponCode } = req.body;
 
   try {
-    let getCartProduct = await Cart.findOne({ userId }).populate(            //get the items added in the Cart
+    // Fetch cart details
+    const getCartProduct = await Cart.findOne({ userId }).populate(
       "items.productId"
     );
-
-    // console.log("Cart Product:-", getCartProduct);
 
     if (!getCartProduct || getCartProduct.items.length === 0) {
       return res.status(400).json({ message: "Cart is empty." });
     }
 
+    // Calculate subtotal
     let subtotal = 0;
     getCartProduct.items.forEach((item) => {
       subtotal += item.productId.price * item.quantity;
     });
-    // console.log("Sub Total:-", subtotal);
 
+    // Calculate discount
     let discount = 0;
+    let appliedCoupon = null;
 
-    const nthOrder = (await Order.countDocuments({ userId })) + 1; //if Nth order then discount applied else discount is Zero
-    if (couponCode === "10PERCENT" && nthOrder % 2 === 0) {
-      discount = subtotal * 0.1;
+    if (couponCode) {
+      // Validate the coupon code
+      const validCoupon = await Coupon.findOne({
+        code: couponCode,
+        userId,
+        isUsed: false,
+      });
+
+      console.log("Validating coupon code:", couponCode);
+
+      if (!validCoupon) {
+        console.error("Coupon validation failed. Code is invalid or expired.");
+        return res
+          .status(400)
+          .json({ message: "Invalid or expired coupon code.", success: false });
+      }
+
+      discount = subtotal * (validCoupon.discount / 100);
+      validCoupon.isUsed = true; // Mark coupon as used
+      await validCoupon.save();
     }
-  
-    const totalAmount = subtotal - discount;              //total Amount on Each order
-    // console.log("Totla Amount:-", totalAmount);
-    let product = [];
-    
-      product = getCartProduct.items.map((item) => ({
-        productId: item.productId._id,
-        name: item.productId.name,
-        price: item.productId.price,
-        quantity: item.quantity,
-        discountOnProduct:discount>0? item.productId.price * 0.1:0,
-      }));
-    
-    console.log("Product Ordered:-", product);
+
+    const totalAmount = subtotal - discount;
+
+    // Prepare order details
+    const product = getCartProduct.items.map((item) => ({
+      productId: item.productId._id,
+      name: item.productId.name,
+      price: item.productId.price,
+      quantity: item.quantity,
+      discountOnProduct: discount ,
+    }));
+
+    // Create a new order
     const newOrder = new Order({
       userId,
-      products: [...product],
+      products: product,
       totalAmount,
-      couponApplied: discount,
+      couponApplied: appliedCoupon ? { code: appliedCoupon, discount } : null,
     });
 
     await newOrder.save();
-    // console.log("order placed");
-    // Clear cart
+
+    // Clear the cart
     await Cart.findOneAndDelete({ userId });
+
+    // Generate a new coupon for every nth order
+    const nthOrder = (await Order.countDocuments({ userId })) + 1; // nth order count
+    if (nthOrder % 5 === 0) {
+      const newCouponCode = `SAVE${nthOrder * 10}`; // Generate unique code
+      const newCoupon = new Coupon({
+        userId,
+        code: newCouponCode,
+        discount: 15, // e.g., 15% discount
+        isUsed: false,
+        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // Valid for 7 days
+      });
+      await newCoupon.save();
+    }
 
     res.status(200).json({
       message: "Order placed successfully.",
