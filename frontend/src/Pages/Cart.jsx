@@ -113,23 +113,11 @@ const Cart = () => {
   };
 
   return (
-    <Box
-      p={8}
-      backgroundColor="white"
-      width="100%"
-      margin="0"
-      justifyContent="flext-start"
-      //   display="flex"
-    >
-      <Heading
-        mb={6}
-        justifyContent="left"
-        align="start"
-        fontStyle={"oblique"}
-        fontSize={30}
-      >
+    <Box p={8} backgroundColor="white" width="100%" margin="0">
+      <Heading mb={6} textAlign="left" fontStyle="oblique" fontSize={30}>
         Cart Products
       </Heading>
+
       {loading ? (
         <HStack justifyContent="center">
           <Spinner size="lg" />
@@ -142,7 +130,7 @@ const Cart = () => {
         </Alert>
       ) : cartProducts.length > 0 ? (
         <>
-          <VStack spacing={6} align="start-left">
+          <VStack spacing={6} align="start">
             {cartProducts.map((item, index) => (
               <Box
                 key={index}
@@ -151,6 +139,7 @@ const Cart = () => {
                 borderColor="gray.200"
                 borderRadius="md"
                 boxShadow="sm"
+                width="100%"
               >
                 <HStack spacing={4}>
                   <Image
@@ -172,24 +161,24 @@ const Cart = () => {
             ))}
           </VStack>
           <Divider my={6} />
-          <Input
-            width="50%"
-            align="left"
-            id="coupon"
-            name="coupon"
-            placeholder="Enter Coupon Code"
-            value={coupon}
-            onChange={(e) => setCoupon(e.target.value)}
-          />
-          <Flex justifyContent="flex" alignItems="center" mt={4}>
+
+          {/* Aligning the Input to the left */}
+          <Box display="flex" justifyContent="flex-start" width="100%" mt={4}>
+            <Input
+              width="70%"
+              id="coupon"
+              name="coupon"
+              placeholder="Enter Coupon Code"
+              value={coupon}
+              onChange={(e) => setCoupon(e.target.value)}
+            />
+          </Box>
+
+          <Flex justifyContent="space-between" alignItems="center" mt={4}>
             <Text fontSize="xl" fontWeight="bold">
               Subtotal: {calculateSubtotal().toFixed(2)}
             </Text>
-            <Button
-              justifyContent="flex-end"
-              margin="10"
-              onClick={handlepayment}
-            >
+            <Button colorScheme="blue" onClick={handlepayment}>
               Check Out
             </Button>
           </Flex>
