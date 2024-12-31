@@ -18,6 +18,7 @@ import {
   useToast,
   Input,
 } from "@chakra-ui/react";
+import Navbar from "../Component/Navbar";
 
 const Cart = () => {
   const [cartProducts, setCartProducts] = useState([]);
@@ -138,7 +139,9 @@ const Cart = () => {
   };
 
   return (
-    <Box display="flex">
+    <Box>
+      <Navbar/>
+    <Box display="flex" width="190vh">
       <Box p={8} backgroundColor="white" width="100%" margin="0">
         <Heading mb={6} textAlign="left" fontStyle="oblique" fontSize={30}>
           Cart Products
@@ -212,22 +215,40 @@ const Cart = () => {
           <Text>Your cart is empty.</Text>
         )}
       </Box>
-      <Box mb={4} margin="100px" width="100%">
+      <Box
+        mb={4}
+        margin="50px"
+        width="70%"
+        borderRadius="10px"
+        borderColor="black"
+      >
         <Text fontSize="lg" fontWeight="bold">
           Available Coupon Codes:
         </Text>
-        <VStack spacing={2} align="start">
+        <VStack
+          spacing={2}
+          align="center"
+          borderRadius="10px"
+          borderColor="black"
+          borderWidth="1px"
+        >
           {userCoupons.length > 0 ? (
             userCoupons.map((couponCode, index) => (
               <Box
                 key={index}
                 p={2}
-                border="1px"
-                borderColor="gray.300"
+                border="10px"
+                borderColor="gray.900"
                 borderRadius="md"
                 width="fit-content"
+                justifyContent="flex-end"
               >
-                <Text fontSize="lg" color="green.600" fontWeight="bold" width="100%">
+                <Text
+                  fontSize="sm"
+                  color="gray.600"
+                  fontWeight="bold"
+                  width="100%"
+                >
                   {couponCode.code}
                 </Text>
               </Box>
@@ -237,6 +258,7 @@ const Cart = () => {
           )}
         </VStack>
       </Box>
+    </Box>
     </Box>
   );
 };
