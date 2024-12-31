@@ -98,6 +98,9 @@ const Order = () => {
                       <Text fontSize="sm" color="gray.600">
                         Quantity: {product.quantity}
                       </Text>
+                      {/* <Text fontSize="sm" color="gray.600">
+                        Total Amount: {item.totalAmount}
+                      </Text> */}
                     </VStack>
                   </HStack>
                 ))}

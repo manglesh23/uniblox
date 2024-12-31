@@ -25,7 +25,7 @@ const orderPlace = async (req, res) => {
     // Calculate discount
     let discount = 0;
     let appliedCoupon = null;
-
+    let discountPercentage=0;
     if (couponCode) {
       // Validate the coupon code
       const validCoupon = await Coupon.findOne({
@@ -45,18 +45,19 @@ const orderPlace = async (req, res) => {
 
       discount = subtotal * (validCoupon.discount / 100);
       validCoupon.isUsed = true; // Mark coupon as used
+      appliedCoupon = validCoupon.code;
+      discountPercentage=validCoupon.discount
       await validCoupon.save();
     }
 
     const totalAmount = subtotal - discount;
 
-    // Prepare order details
-    const product = getCartProduct.items.map((item) => ({
+     const product = getCartProduct.items.map((item) => ({
       productId: item.productId._id,
       name: item.productId.name,
       price: item.productId.price,
       quantity: item.quantity,
-      discountOnProduct: discount ,
+      discountOnProduct: appliedCoupon?item.productId.price *(discountPercentage/100):0,
     }));
 
     // Create a new order
@@ -64,7 +65,7 @@ const orderPlace = async (req, res) => {
       userId,
       products: product,
       totalAmount,
-      couponApplied: appliedCoupon ? { code: appliedCoupon, discount } : null,
+      couponApplied: appliedCoupon ? discount : 0,
     });
 
     await newOrder.save();
