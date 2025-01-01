@@ -75,8 +75,27 @@ const Navbar = () => {
     fetchUserCart();
   }, []);
 
-  const getMyProfile = () => {
+  const getMyProfile = async() => {
     console.log("get my profile");
+    try {
+        let getToken = localStorage.getItem("authToken");
+        let config = {
+          method: "get",
+          maxBodyLength: Infinity,
+          url: "http://localhost:4000/user/getuser",
+          headers: {
+            Authorization: getToken,
+          },
+        };
+  
+        let response = await axios(config);
+        // console.log("User Profile:-", response);
+        if (response) {
+          navigate("/user", { state: { apiData: response.data.msg } });
+        }
+      } catch (e) {
+        console.error(e);
+      }
   };
 
   const addproduct = () => {
@@ -91,13 +110,6 @@ const Navbar = () => {
     window.location.href = "/";
   };
 
-  //   const getOrderHistory = () => {
-  //     console.log("get order history");
-  //   };
-
-  //   const handleCart = () => {
-  //     console.log("cart");
-  //   };
   const handleCart = () => {
     console.log("Handle Cart");
     navigate("/cart");
