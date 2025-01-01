@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Flex,
@@ -19,40 +19,110 @@ import {
   Spinner,
   useToast,
   Badge,
-  
 } from "@chakra-ui/react";
 // import { FaSearch, FaUser, FaShoppingCart } from "react-icons/fa";
 import { FiShoppingCart, FiUser, FiSearch } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
-
+import { jwtDecode } from "jwt-decode";
+import axios from "axios";
 
 const Navbar = () => {
   const [role, setRole] = useState("");
   const [cartCount, setCartCount] = useState(0);
-  const navigate=useNavigate();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchUserRole = () => {
+      try {
+        const token = localStorage.getItem("authToken");
+        if (token) {
+          let user = jwtDecode(token);
+          //   console.log("User:-", user);
+          setRole(user.role);
+        } else {
+          console.warn("not token");
+        }
+      } catch (err) {
+        console.log("Error:-", err);
+      }
+    };
+    fetchUserRole();
+  }, []);
+
+  useEffect(() => {
+    const fetchUserCart = async () => {
+      try {
+        let getToken = localStorage.getItem("authToken");
+        let config = {
+          method: "get",
+          maxBodyLength: Infinity,
+          url: "http://localhost:4000/cart/getcartproduct",
+          headers: {
+            Authorization: getToken,
+          },
+        };
+
+        let response = await axios(config);
+        // console.log("Cart Product:-", response);
+        // setCartProducts(response.data.items || []);
+        setCartCount(response.data.items.length);
+        // cartCount = response.data.items.length;
+      } catch (e) {
+        console.error("Error fetching cart products:", e);
+        // setError(err.response?.data?.message || "An error occurred");
+      }
+    };
+    fetchUserCart();
+  }, []);
 
   const getMyProfile = () => {
     console.log("get my profile");
   };
+
   const addproduct = () => {
     console.log("add product");
     navigate("/addproduct");
   };
+
   const logout = () => {
     console.log("Log Out");
     localStorage.removeItem("authToken");
     // alert("Logged out successfully!");
     window.location.href = "/";
   };
-  
-  const getOrderHistory = () => {
-    console.log("get order history");
-  };
-  
+
+  //   const getOrderHistory = () => {
+  //     console.log("get order history");
+  //   };
+
+  //   const handleCart = () => {
+  //     console.log("cart");
+  //   };
   const handleCart = () => {
-    console.log("cart");
+    console.log("Handle Cart");
+    navigate("/cart");
   };
-  
+
+  const getOrderHistory = async () => {
+    console.log("order history");
+    let getToken = localStorage.getItem("authToken");
+    let config = {
+      method: "get",
+      maxBodyLength: Infinity,
+      url: "http://localhost:4000/order/getorder",
+      headers: {
+        Authorization: getToken,
+      },
+    };
+
+    let response = await axios(config);
+    // console.log(response);
+    // setOrder(response.data);
+    if (response.data) {
+      navigate("/order", { state: { apiData: response.data } });
+      // <Order data={response.data}/>
+    }
+  };
 
   return (
     <Flex
@@ -71,6 +141,10 @@ const Navbar = () => {
         color="teal.500"
         fontStyle="oblique"
         align="start"
+        role="button"
+        tabIndex="0"
+        onClick={() => navigate("/home")}
+        onKeyDown={(e) => e.key === "Enter" && navigate("/home")}
       >
         Uniblox
       </Text>
