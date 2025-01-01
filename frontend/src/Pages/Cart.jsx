@@ -138,6 +138,10 @@ const Cart = () => {
     }
   };
 
+  const removeFromCart=()=>{
+    console.log("remove from cart")
+  }
+
   return (
     <Box>
       <Navbar/>
@@ -184,6 +188,7 @@ const Cart = () => {
                       </Text>
                       <Text>Price: {item.productId?.price || "N/A"}</Text>
                       <Text>Quantity: {item.quantity}</Text>
+                      <Button onClick={removeFromCart}>Remove</Button>
                     </VStack>
                   </HStack>
                 </Box>

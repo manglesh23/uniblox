@@ -19,31 +19,41 @@ import {
   Spinner,
   useToast,
   Badge,
+  
 } from "@chakra-ui/react";
 // import { FaSearch, FaUser, FaShoppingCart } from "react-icons/fa";
 import { FiShoppingCart, FiUser, FiSearch } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 
-const getMyProfile = () => {
-  console.log("get my profile");
-};
-const addproduct = () => {
-  console.log("add product");
-};
-const logout = () => {
-  console.log("log out");
-};
 
-const getOrderHistory = () => {
-  console.log("get order history");
-};
-
-const handleCart = () => {
-  console.log("cart");
-};
 const Navbar = () => {
   const [role, setRole] = useState("");
-  const [cartCount,setCartCount]=useState(0);
+  const [cartCount, setCartCount] = useState(0);
+  const navigate=useNavigate();
+
+  const getMyProfile = () => {
+    console.log("get my profile");
+  };
+  const addproduct = () => {
+    console.log("add product");
+    navigate("/addproduct");
+  };
+  const logout = () => {
+    console.log("Log Out");
+    localStorage.removeItem("authToken");
+    // alert("Logged out successfully!");
+    window.location.href = "/";
+  };
   
+  const getOrderHistory = () => {
+    console.log("get order history");
+  };
+  
+  const handleCart = () => {
+    console.log("cart");
+  };
+  
+
   return (
     <Flex
       justify="space-between"

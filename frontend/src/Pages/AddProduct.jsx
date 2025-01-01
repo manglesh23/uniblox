@@ -9,6 +9,7 @@ import {
   useToast
 } from "@chakra-ui/react";
 import axios from "axios";
+import Navbar from "../Component/Navbar";
 
 const AddProduct = () => {
   const [name, setName] = useState("");
@@ -71,6 +72,8 @@ const AddProduct = () => {
     }
   };
   return (
+    <Box>
+    <Navbar/>
     <Box
       maxW="300px"
       mx="auto"
@@ -81,6 +84,7 @@ const AddProduct = () => {
       boxShadow="lg"
       bg="white"
     >
+      
       <form onSubmit={handleSubmit}>
         <Stack spacing={4}>
           {/* Name */}
@@ -156,6 +160,7 @@ const AddProduct = () => {
           </Button>
         </Stack>
       </form>
+    </Box>
     </Box>
   );
 };
